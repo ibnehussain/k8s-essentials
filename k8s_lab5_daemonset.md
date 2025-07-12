@@ -1,4 +1,13 @@
-🔎 **Check Cluster Setup**:
+
+# DaemonSet - Kubernetes Lab
+
+---
+
+## 🧰 Task 1: Check Cluster Setup
+
+### ✅ Prerequisites
+
+Ensure your Kubernetes cluster is running and `kubectl` is configured.
 
 ```bash
 # Ensure nodes are ready
@@ -6,19 +15,19 @@ kubectl get nodes
 
 # Check kubectl context
 kubectl config current-context
-````
+```
 
 ---
 
-## 📄 Step-by-Step Deployment
+## 🛠️ Task 2: Create DaemonSet YAML
 
-### 1️⃣ Create DaemonSet YAML file
+### 📝 Step 1: Create the YAML File
 
 ```bash
 nano daemonset.yaml
 ```
 
-Paste the following YAML:
+Paste the following content:
 
 ```yaml
 apiVersion: apps/v1
@@ -42,108 +51,123 @@ spec:
 
 ---
 
-### 2️⃣ Apply DaemonSet
+## 🚀 Task 3: Deploy the DaemonSet
+
+### 🏗️ Step 2: Apply the YAML
 
 ```bash
 kubectl apply -f daemonset.yaml
 ```
 
-✔️ **What Happens?**
-
-* One pod is scheduled **per node**
-* Each pod runs a simple log loop
+✔️ This will:
+- Create a pod **on every node**
+- Each pod will continuously log a message every 30 seconds
 
 ---
 
-### 3️⃣ Verify Deployment
+## 🔎 Task 4: Verify Deployment
+
+### 📋 Step 3: View DaemonSet and Pods
 
 ```bash
 # List DaemonSets
 kubectl get daemonsets
 
-# List pods and see node distribution
+# List pods across nodes
 kubectl get pods -o wide
 
-# Describe the DaemonSet
+# Detailed info
 kubectl describe ds log-agent
 ```
 
-> You should see **one pod per node**, with each pod running on a different node.
+> ✅ You should see one pod per node running the `log-agent`.
 
 ---
 
----
+## 🔄 Task 5: Add a New Node (Test DaemonSet Behavior)
 
-### 4️⃣ Add a New Node (Advanced Test)
-
-If you're using a dynamic cluster (like EKS, GKE, AKS, or a local multi-node setup), try adding a node.
-
-✅ A new pod will automatically be scheduled on that new node!
-
-## 🧭 Steps to Edit Auto Scaling Group via AWS Console
-
-### Login to AWS Console
-
-- Go to EC2 Console
+We’ll now simulate adding a new node to verify DaemonSet automatically places a pod on it.
 
 ---
 
-### Navigate to Auto Scaling Groups
+## ⚙️ Task 6: Edit AWS Auto Scaling Group (Console Method)
 
-- In the left sidebar, scroll to **Auto Scaling** → click on **Auto Scaling Groups**
+### 🔐 Step 1: Login to AWS Console
+
+- Visit [https://console.aws.amazon.com/ec2](https://console.aws.amazon.com/ec2)
 
 ---
 
-### Locate Your Node Group ASG
+### 📁 Step 2: Go to Auto Scaling Groups
 
-- Look for an ASG with a name like:
+- In the left sidebar, select **Auto Scaling Groups**
+
+---
+
+### 🔍 Step 3: Locate Your Node Group
+
+- Search for your ASG name:
   - `nodes.cluster-name.k8s.local` *(Kops)*
-  - or something like `eks-nodegroup-<name>` *(EKS)*
+  - or `eks-nodegroup-<name>` *(EKS)*
 
-- Click on the **ASG name** to open its details.
+- Click on the ASG name to open its details
 
 ---
 
-### Edit Desired Capacity
+### 🧾 Step 4: Edit Desired Capacity
 
-- In the ASG dashboard, click **Edit** (usually in the top right corner).
-- Modify the following:
-  - **Desired Capacity**: Increase (e.g., from 2 → 3)
-  - *(Optional)* **Minimum Size**: Match or set accordingly
-  - *(Optional)* **Maximum Size**: Ensure it's >= desired
+- Click **Edit**
+- Update the following fields:
+  - **Desired Capacity** → e.g., from `2` to `3`
+  - *(Optional)* **Min Size**
+  - *(Optional)* **Max Size**
 
 - Click **Update**
 
----
-
-### Wait for the Node to Launch
-
-- A new EC2 instance will be launched automatically.
-- It will join your Kubernetes cluster.
+> 💡 AWS will now launch a new EC2 instance.
 
 ---
 
-## 🔍 Verify in Kubernetes
+## ✅ Task 7: Verify in Kubernetes
 
-Once the new node joins (may take 2–4 minutes):
+Wait 2–4 minutes for the new node to be registered.
+
+### 🖥️ Step 1: Confirm Node is Ready
 
 ```bash
 kubectl get nodes
+```
+
+You should see the new node in `Ready` state.
+
 ---
-You should see the new node listed.
+
+### 🔍 Step 2: Check DaemonSet Pod on New Node
 
 ```bash
 kubectl get pods -o wide
-Check that your DaemonSet has automatically scheduled a pod on the new node.
+```
+
+A new pod of `log-agent` should now appear on the new node.
+
 ---
+
+### 📊 Step 3: Confirm in DaemonSet
+
 ```bash
 kubectl get ds
-You’ll now see increased pod count under DESIRED and CURRENT.
-### Clean Up
+```
+
+You’ll see an updated count in the `DESIRED` and `CURRENT` columns.
+
+---
+
+## 🧹 Task 8: Clean Up
 
 ```bash
 kubectl delete -f daemonset.yaml
 ```
 
-✔️ All DaemonSet-managed pods will be removed.
+✔️ This will remove the DaemonSet and its pods from all nodes.
+
 ---
