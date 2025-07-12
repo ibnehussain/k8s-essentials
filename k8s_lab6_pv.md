@@ -1,9 +1,13 @@
+Here’s the **corrected and properly formatted** `.md` version of your file, with consistent heading levels, corrected backticks, and polished formatting for clean rendering on GitHub or Markdown viewers:
+
+````md
 # 🧪 Lab: Using PersistentVolume (PV) in Kubernetes
 
 ---
 
 ## 🧩 Step-by-Step Implementation
-## 🧰 Task 1: Check Your Cluster
+
+### 🧰 Task 1: Check Your Cluster
 
 ```bash
 kubectl get nodes
@@ -13,9 +17,9 @@ kubectl get nodes
 
 ---
 
-## 🛠️ Task 2: Create a Static PersistentVolume (PV)
+### 🛠️ Task 2: Create a Static PersistentVolume (PV)
 
-### 📝 Step 1: Create `pv.yaml`
+#### 📝 Step 1: Create `pv.yaml`
 
 ```yaml
 apiVersion: v1
@@ -31,7 +35,7 @@ spec:
     path: /mnt/data
 ```
 
-### Apply the PV
+#### ✅ Apply the PV
 
 ```bash
 kubectl apply -f pv.yaml
@@ -39,9 +43,9 @@ kubectl apply -f pv.yaml
 
 ---
 
-## 📥 Task 3: Create a PersistentVolumeClaim (PVC)
+### 📥 Task 3: Create a PersistentVolumeClaim (PVC)
 
-### 📝 Step 2: Create `pvc.yaml`
+#### 📝 Step 2: Create `pvc.yaml`
 
 ```yaml
 apiVersion: v1
@@ -56,13 +60,13 @@ spec:
       storage: 1Gi
 ```
 
-### Apply the PVC
+#### ✅ Apply the PVC
 
 ```bash
 kubectl apply -f pvc.yaml
 ```
 
-Check status:
+✅ Check status:
 
 ```bash
 kubectl get pvc
@@ -72,9 +76,9 @@ Look for `STATUS: Bound`.
 
 ---
 
-## 🚀 Task 4: Create a Pod that Uses the PVC
+### 🚀 Task 4: Create a Pod that Uses the PVC
 
-### 📝 Step 3: Create `pod.yaml`
+#### 📝 Step 3: Create `pod.yaml`
 
 ```yaml
 apiVersion: v1
@@ -94,7 +98,7 @@ spec:
       claimName: my-pvc
 ```
 
-### Apply the Pod
+#### ✅ Apply the Pod
 
 ```bash
 kubectl apply -f pod.yaml
@@ -103,9 +107,9 @@ kubectl get pod mypod -o wide
 
 ---
 
-## 🧪 Task 5: Test Storage
+### 🧪 Task 5: Test Storage
 
-### Step 4: Write to the Volume
+#### 🧾 Step 4: Write to the Volume
 
 ```bash
 kubectl exec -it mypod -- sh
@@ -113,11 +117,12 @@ echo "Hello from static PV!" > /usr/share/nginx/html/index.html
 exit
 ```
 
-### Step 5: Verify PV by creating Pod again
+#### 🔁 Step 5: Verify PV by creating Pod again
+
 ```bash
 kubectl apply -f pod.yaml
 kubectl get pod mypod -o wide
-
+```
 
 ---
 
@@ -129,8 +134,9 @@ kubectl delete -f pvc.yaml
 kubectl delete -f pv.yaml
 ```
 
-```
-## 🚮 Delete the Cluster and your EC2 server (kops)
+---
+
+## 🚮 Delete the Cluster and Your EC2 Server (Kops)
 
 To clean up your Kubernetes setup and avoid unwanted charges, follow these steps to delete your **Kubernetes cluster** and **EC2 resources**.
 
@@ -141,7 +147,7 @@ To clean up your Kubernetes setup and avoid unwanted charges, follow these steps
 ```bash
 kops get cluster
 kops delete cluster --name <your-cluster-name> --yes
-````
+```
 
 ---
 
@@ -154,27 +160,36 @@ kops delete cluster --name <your-cluster-name> --yes
 ✅ **Note:** This ensures you're not billed further.
 
 ---
-### 🔴 Step 3: Delete S3 bucket
 
-1. Go to **AWS Console > S3 **
+### 🔴 Step 3: Delete S3 Bucket
+
+1. Go to **AWS Console > S3**
 2. Select your S3 bucket
-3. Click on **Delete **
-4. Enter the name of the bucket to confirm deletion and click on Delete bucket
-
-### ✅ Verify Cleanup
-
-* Confirm S3 bucket is gone:
-
-* Check EC2 dashboard:
-  No instances should be in “running” or “pending” state.
+3. Click on **Delete**
+4. Enter the bucket name to confirm deletion and click **Delete bucket**
 
 ---
 
-### 🧹 Done!
+### ✅ Verify Cleanup
 
-You’ve successfully removed the Kubernetes cluster and freed up AWS resources. 🎉
-🎉  Well done completing these labs. Keep practicing. Happy Learning! 🚀
+* Confirm S3 bucket is gone
+* Check EC2 dashboard: No instances should be in “running” or “pending” state
+
+---
+
+## ✅ Done!
+
+🎉 You’ve successfully removed the Kubernetes cluster and freed up AWS resources.
+
+---
+
+## 🎊 Well Done!
+
+> 🧠 Keep experimenting.
+> 🚀 Stay curious, keep learning.
+> 📘 **Happy Learning!**
+
+---
+
 ```
-
-
 ```
