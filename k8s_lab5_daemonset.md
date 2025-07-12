@@ -130,7 +130,15 @@ Once the new node joins (may take 2–4 minutes):
 ```bash
 kubectl get nodes
 ---
+You should see the new node listed.
 
+```bash
+kubectl get pods -o wide
+Check that your DaemonSet has automatically scheduled a pod on the new node.
+---
+```bash
+kubectl get ds
+You’ll now see increased pod count under DESIRED and CURRENT.
 ### Clean Up
 
 ```bash
@@ -138,6 +146,4 @@ kubectl delete -f daemonset.yaml
 ```
 
 ✔️ All DaemonSet-managed pods will be removed.
-
 ---
-
