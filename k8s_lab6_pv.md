@@ -172,13 +172,13 @@ kops delete cluster --name <your-cluster-name> --yes
 
 ---
 
-## ✅ Done!
+## ✅ Well Done!
 
 🎉 You’ve successfully removed the Kubernetes cluster and freed up AWS resources.
 
 ---
 
-## 🎊 Well Done!
+## 🐳 Done & Dusted
 
 > 🧠 Keep experimenting.
 > 🚀 Stay curious, keep learning.
