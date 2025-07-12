@@ -2,9 +2,10 @@
 
 ## 🔰 Use Case Setup: Simple NGINX App
 
-Create a Deployment for NGINX (used by all service types).
+### 🧩 Task 1: Create a Deployment
+Create a Deployment for NGINX (which will be used by all service types).
 
-### `nginx-deployment.yaml`
+#### `nginx-deployment.yaml`
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -27,9 +28,12 @@ spec:
         - containerPort: 80
 ```
 
-### Commands:
+#### Commands:
 ```bash
+# Create the deployment from YAML
 kubectl apply -f nginx-deployment.yaml
+
+# Verify that pods are created and running, with detailed node info
 kubectl get pods -o wide
 ```
 
@@ -38,7 +42,9 @@ kubectl get pods -o wide
 ## 1️⃣ ClusterIP (Default)
 > Internal communication only — accessible **within the cluster**.
 
-### `clusterip-service.yaml`
+### 🧩 Task 2: Create ClusterIP Service
+
+#### `clusterip-service.yaml`
 ```yaml
 apiVersion: v1
 kind: Service
@@ -53,16 +59,21 @@ spec:
   type: ClusterIP
 ```
 
-### Commands:
+#### Commands:
 ```bash
+# Create the ClusterIP service from YAML
 kubectl apply -f clusterip-service.yaml
+
+# Verify service is created and note the ClusterIP address
 kubectl get svc nginx-clusterip
 ```
 
-### Test (From inside a Pod):
+### 🧩 Task 3: Test ClusterIP Service from inside the cluster
 ```bash
+# Launch an interactive BusyBox pod to test internal access
 kubectl run busybox --image=busybox:1.28 --restart=Never -it -- sh
-# Inside pod shell:
+
+# Inside pod shell: send HTTP request to the service
 wget -qO- http://nginx-clusterip
 ```
 
@@ -71,7 +82,9 @@ wget -qO- http://nginx-clusterip
 ## 2️⃣ NodePort
 > Exposes service **on each Node’s IP at a static port**.
 
-### `nodeport-service.yaml`
+### 🧩 Task 4: Create NodePort Service
+
+#### `nodeport-service.yaml`
 ```yaml
 apiVersion: v1
 kind: Service
@@ -87,18 +100,21 @@ spec:
   type: NodePort
 ```
 
-### Commands:
+#### Commands:
 ```bash
+# Create the NodePort service
 kubectl apply -f nodeport-service.yaml
+
+# View the service and identify the exposed NodePort
 kubectl get svc nginx-nodeport
 ```
 
-### Test:
+### 🧩 Task 5: Test NodePort Service from browser or terminal
 ```bash
-# Get Node External IP
+# Get the external/public IP of the worker nodes
 kubectl get nodes -o wide
 
-# Access service:
+# Access the service via any node's IP and NodePort
 curl http://<NodeIP>:30080
 ```
 
@@ -107,7 +123,9 @@ curl http://<NodeIP>:30080
 ## 3️⃣ LoadBalancer
 > Exposes service **externally using a cloud provider’s LoadBalancer**.
 
-### `loadbalancer-service.yaml`
+### 🧩 Task 6: Create LoadBalancer Service
+
+#### `loadbalancer-service.yaml`
 ```yaml
 apiVersion: v1
 kind: Service
@@ -122,26 +140,34 @@ spec:
   type: LoadBalancer
 ```
 
-### Commands:
+#### Commands:
 ```bash
+# Create the LoadBalancer service
 kubectl apply -f loadbalancer-service.yaml
+
+# Watch until the external IP is assigned by the cloud provider
 kubectl get svc nginx-loadbalancer --watch
 ```
 
-### Test:
+### 🧩 Task 7: Test LoadBalancer Service
 ```bash
+# Once EXTERNAL-IP is available, access it via curl or browser
 curl http://<External-IP>
 ```
 
 ---
 
+## Cleanup
 
-## Cleanup 
+### 🧩 Task 8: Cleanup Resources
 ```bash
+# Delete deployment and all services
 kubectl delete -f nginx-deployment.yaml
 kubectl delete -f clusterip-service.yaml
 kubectl delete -f nodeport-service.yaml
 kubectl delete -f loadbalancer-service.yaml
+
+# Delete test pod used for ClusterIP validation
 kubectl delete pod busybox
 ```
 
