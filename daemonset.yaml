@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: log-agent
+spec:
+  selector:
+    matchLabels:
+      name: log-agent
+  template:
+    metadata:
+      labels:
+        name: log-agent
+    spec:
+      containers:
+      - name: log-collector
+        image: busybox
+        command: ["/bin/sh", "-c", "while true; do echo logs; sleep 30; done"]
