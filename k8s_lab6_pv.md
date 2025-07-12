@@ -1,11 +1,8 @@
-
-
-````md
 ### 🧪 Lab: Using PersistentVolume (PV) in Kubernetes
+## 🧩 Step-by-Step Implementation
+````md
 
 ---
-
-## 🧩 Step-by-Step Implementation
 
 ### 🧰 Task 1: Check Your Cluster
 
