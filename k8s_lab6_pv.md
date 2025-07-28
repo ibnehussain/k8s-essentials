@@ -7,7 +7,7 @@
 ```bash
 kubectl get nodes
 ````
-
+///seen clone as of now
 ✅ Ensure at least one node is in `Ready` state.
 
 ---
